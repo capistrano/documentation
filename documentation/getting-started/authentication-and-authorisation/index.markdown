@@ -202,6 +202,10 @@ exact same check that Capistrano does internally before attempting to deploy.
 The `-A` option may, or may not be required on your system, it's worth trying
 it both ways just to know how your system treats agent forwarding by default.
 
+**Note:** You may need to add your repo server to the `.ssh/known_hosts` file, which can
+be done automatically if you do `git ls-remote git@github.com:me/repo.git` direct from
+the server, using the `deploy` user.
+
 From the SSH documentation:
 
 {% prism bash %}

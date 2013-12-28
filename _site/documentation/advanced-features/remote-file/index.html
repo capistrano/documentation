@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Role filtering</title>
+    <title>Remote file task</title>
     <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -74,8 +74,11 @@
   <li><a href="/documentation/getting-started/cold-start/">Cold Start</a></li>
   <li><a href="/documentation/getting-started/flow/">Flow</a></li>
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
-  <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
-  <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
+  <li class="divider"></li>
+  <h5>Advanced Features</h5>
+  <li><a href="/documentation/advanced-features/remote-file/">Remote file task</a></li>
+  <li><a href="/documentation/advanced-features/role-filtering/">Role filtering</a></li>
+  <li><a href="/documentation/advanced-features/capistrano-pure-ruby/">Using Capistrano from pure Ruby</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -112,51 +115,25 @@
       </div>
       <div class="large-8 column">
         <div class="content">
-          <h2>Role filtering</h2>
-          <p>You may have situations where you only want to deploy to servers matching
-a single role. For example, you may have changed some aspect of how the web
-role works, but don&#39;t want to trigger a deployment to your database servers.</p>
+          <h2>Remote file task</h2>
+          <p>The <code>remote_file</code> task is allowing the existence of a remote file to be set as a prerequisite. These tasks can in turn depend on local files if required. In this implementation, the fact that we&#39;re dealing with a file in the shared path is assumed.</p>
 
-<p>You can use the <em>role filter</em> to restrict Capistrano tasks to only servers
-match a given role or roles.</p>
+<p>As as example, this task can be used to ensure that files to be linked exist
+before running the check:linked_files task:</p>
 
-<p>If the filter matches no servers, no actions will be taken.</p>
+<div>
+  <pre data-line=''><code class='language-ruby'>namespace :deploy do
+  namespace :check do
+    task :linked_files =&gt; &#39;config/newrelic.yml&#39;
+  end
+end
 
-<p>If you specify a filter, it will match any servers that have that role, but 
-it will <em>only</em> run the tasks for that role, not for any other roles that
-server may have. For example, if you filtered for servers with the <code>web</code> role,
-and a server had both the <code>web</code> and <code>db</code> role, only the <code>web</code> role would
-be executed on it.</p>
+remote_file &#39;config/newrelic.yml&#39; =&gt; &#39;/tmp/newrelic.yml&#39;, roles: :app
 
-<h3 id="toc_0">Specifying a role filter</h3>
-
-<p>There are three ways to specify the role filter.</p>
-
-<h4 id="toc_1">Environment variable</h4>
-
-<p>Capistrano will read the role filter from the environment variable <code>ROLES</code>
-if it is set. You can set it inline:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ROLES=app,web cap production deploy
-</code></pre></div>
-<p>Specify multiple roles by separating them with a comma.</p>
-
-<h4 id="toc_2">In configuration</h4>
-
-<p>You can set the role filter inside your deploy configuration. For example,
-you can set the following inside <code>config/deploy.rb</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">set :filter, :roles =&gt; %w{app web}
-</code></pre></div>
-<p>Note that you specify the filter as an array rather than as a comma-separated
-list of roles when using this method.</p>
-
-<h4 id="toc_3">On the command line</h4>
-
-<p>In a similar way to using the environment variable, you can set the role
-filter by specifying it as a command line argument to <code>cap</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cap --roles=app,web production deploy
-</code></pre></div>
-<p>Like the environment variable method, specify multiple roles by separating them
-with a comma.</p>
+file &#39;/tmp/newrelic.yml&#39; do |t|
+  sh &quot;curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml&quot;
+end</code></pre>
+</div>
 
         </div>
       </div>
@@ -167,50 +144,24 @@ with a comma.</p>
       <!--      <a class="extra" href="/">home</a>                    -->
       <!--    </div>                                                  -->
 
-    <!--    <p>You may have situations where you only want to deploy to servers matching
-a single role. For example, you may have changed some aspect of how the web
-role works, but don&#39;t want to trigger a deployment to your database servers.</p>
+    <!--    <p>The <code>remote_file</code> task is allowing the existence of a remote file to be set as a prerequisite. These tasks can in turn depend on local files if required. In this implementation, the fact that we&#39;re dealing with a file in the shared path is assumed.</p>
 
-<p>You can use the <em>role filter</em> to restrict Capistrano tasks to only servers
-match a given role or roles.</p>
+<p>As as example, this task can be used to ensure that files to be linked exist
+before running the check:linked_files task:</p>
 
-<p>If the filter matches no servers, no actions will be taken.</p>
+<div>
+  <pre data-line=''><code class='language-ruby'>namespace :deploy do
+  namespace :check do
+    task :linked_files =&gt; &#39;config/newrelic.yml&#39;
+  end
+end
 
-<p>If you specify a filter, it will match any servers that have that role, but 
-it will <em>only</em> run the tasks for that role, not for any other roles that
-server may have. For example, if you filtered for servers with the <code>web</code> role,
-and a server had both the <code>web</code> and <code>db</code> role, only the <code>web</code> role would
-be executed on it.</p>
+remote_file &#39;config/newrelic.yml&#39; =&gt; &#39;/tmp/newrelic.yml&#39;, roles: :app
 
-<h3 id="toc_0">Specifying a role filter</h3>
-
-<p>There are three ways to specify the role filter.</p>
-
-<h4 id="toc_1">Environment variable</h4>
-
-<p>Capistrano will read the role filter from the environment variable <code>ROLES</code>
-if it is set. You can set it inline:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ROLES=app,web cap production deploy
-</code></pre></div>
-<p>Specify multiple roles by separating them with a comma.</p>
-
-<h4 id="toc_2">In configuration</h4>
-
-<p>You can set the role filter inside your deploy configuration. For example,
-you can set the following inside <code>config/deploy.rb</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">set :filter, :roles =&gt; %w{app web}
-</code></pre></div>
-<p>Note that you specify the filter as an array rather than as a comma-separated
-list of roles when using this method.</p>
-
-<h4 id="toc_3">On the command line</h4>
-
-<p>In a similar way to using the environment variable, you can set the role
-filter by specifying it as a command line argument to <code>cap</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cap --roles=app,web production deploy
-</code></pre></div>
-<p>Like the environment variable method, specify multiple roles by separating them
-with a comma.</p>
+file &#39;/tmp/newrelic.yml&#39; do |t|
+  sh &quot;curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml&quot;
+end</code></pre>
+</div>
                                            -->
 
     <!--</div> [> /container <]                                     -->
@@ -222,8 +173,6 @@ with a comma.</p>
       <li><a href="/about">About Capistrano</a></li>
       <li><a href="https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING">Contributing</a></li>
       <li><a href="https://rubygems.org/gems/capistrano/versions">Releases</a></li>
-      <li><a href="/documentation/upgrading">Upgrading</a></li>
-      <li><a href="/security">Security</a></li>
       </ul>
     </div>
 
@@ -231,7 +180,6 @@ with a comma.</p>
       <ul>
         <li><a href="http://stackoverflow.com/questions/tagged/capistrano">StackOverflow</a></li>
         <li><a href="https://groups.google.com/forum/#!forum/capistrano">Mailing List</a></li>
-        <li><a href=".... ">Commercial Support</a></li>
       </ul>
     </div>
 

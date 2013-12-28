@@ -67,7 +67,7 @@ keys securely between uses, typically the first time a key is needed in a
 given time period, the SSH agent will load the key, prompt you for your
 passphrase and then the key agent will remember the key for a certain amount
 of time (on OSX it tends to be indefinite, on linux this can vary from 15
-minutes updwards.)
+minutes upwards.)
 
 We can see which keys are loaded in the SSH agent by running `ssh-add -l`
 
@@ -79,7 +79,7 @@ We can see which keys are loaded in the SSH agent by running `ssh-add -l`
 If you don't see any keys listed, you can simply run `ssh-add`:
 
 {% prism bash %}
-    me@localhsot $ ssh-add
+    me@localhost $ ssh-add
     Identity added: /Users/me/.ssh/id_rsa (/Users/me/.ssh/id_rsa)
 {% endprism %}
 
@@ -160,6 +160,22 @@ href="https://twitter.com/postmodern_mod3/statuses/300438256200339456">February
 <script async src="//platform.twitter.com/widgets.js"
 charset="utf-8"></script>
 
+If your server isn't accessible directly and you need to use the SSH
+ProxyCommand option, you should do
+
+{% prism ruby %}
+require 'net/ssh/proxy/command'
+
+set :ssh_options, proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p')
+
+# OR
+
+server 'internal-hostname',
+  ssh_options: {
+    proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p'),
+  }
+{% endprism %}
+
 #### 1.2 From our servers to the repository host
 
 With access from workstations to the servers settled, there is another hop to
@@ -202,6 +218,10 @@ exact same check that Capistrano does internally before attempting to deploy.
 The `-A` option may, or may not be required on your system, it's worth trying
 it both ways just to know how your system treats agent forwarding by default.
 
+If you get the error "host key verification failed." log in into your server
+and run as the deploy user the command `ssh git@github.com` to add github.com
+to the list of known hosts.
+
 From the SSH documentation:
 
 {% prism bash %}
@@ -216,7 +236,7 @@ From the SSH documentation:
          loaded into the agent.
 {% endprism %}
 
-In laymans terms, you should't use SSH agent forwarding to machines where you
+In layman's terms, you shouldn't use SSH agent forwarding to machines where you
 don't trust the administrators, as they can can override the permissions on
 the system and use your keys as if they were you. That said, if you can't
 trust your server administrators, perhaps they shouldn't have access to your
@@ -314,7 +334,7 @@ this carefully, and ideally architect your systems so that non-privileged
 users can restart services, or that services restart *themselves* when they
 notice a change.
 
-To configure this heirarchy, ignoring for the moment the passwordless `sudo`
+To configure this hierarchy, ignoring for the moment the passwordless `sudo`
 access that you may or may not need depending how well your servers are setup:
 
 {% prism bash %}
@@ -322,7 +342,7 @@ access that you may or may not need depending how well your servers are setup:
     # Capistrano will use /var/www/....... where ... is the value set in
     # :application, you can override this by setting the ':deploy_to' variable
     root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
-    root@remote $ mkdir ${deploy_to}
+    root@remote $ mkdir -p ${deploy_to}
     root@remote $ chown deploy:deploy ${deploy_to}
     root@remote $ umask 0002
     root@remote $ chmod g+s ${deploy_to}
@@ -332,7 +352,7 @@ access that you may or may not need depending how well your servers are setup:
 **Note:** The `chmod g+s` is a really handy, and little known Unix feature, it
 means that at the operating system level, without having to pay much attention
 to the permissions at runtime, all files an directories created inside the
-`${deploy_to}` directoy will inherit the group ownership, that means in this
+`${deploy_to}` directory will inherit the group ownership, that means in this
 case even though we are root, the files will be created being owned by `root`
 with the group `deploy`, the `umask 0002` ensures that the files created
 *during this session* are created with the permissions *owner read/write,

@@ -19,3 +19,5 @@ This list is neither complete nor audited in any way.
 <div class="github-widget" data-repo="scottsuch/capistrano-graphite"></div>
 
 <div class="github-widget" data-repo="dei79/capistrano-rails-collection"></div>
+
+<div class="github-widget" data-repo="i-ekho/capistrano-git-submodule-strategy"></div>

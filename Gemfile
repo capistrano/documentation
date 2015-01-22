@@ -6,3 +6,4 @@ source "https://rubygems.org"
 # just do `bundle update` to get the latest version.
 
 gem 'github-pages'
+gem 'html-proofer'

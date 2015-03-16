@@ -13,11 +13,11 @@ after :finishing, :notify
 
 
 # or define in block
-before :starting, :ensure_user do
+before :starting do
   #
 end
 
-after :finishing, :notify do
+after :finishing do
   #
 end
 ```

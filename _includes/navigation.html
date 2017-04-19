@@ -1,0 +1,53 @@
+<ul class="side-nav">
+  <li><a href="https://www.harrow.io/" class="advertisment"><span class="label label-important">New</span> Hosted Capistrano for Teams</a></li>
+  <li class="divider"></li>
+  <h5>Overview</h5>
+  <li><a href="/documentation/overview/what-is-capistrano/">What is Capistrano?</a></li>
+  <!--<li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>-->
+  <li class="divider"></li>
+  <h5>Getting Started</h5>
+  <li><a href="https://github.com/capistrano/capistrano/blob/master/README.md">The Readme, start here!</a></li>
+  <li><a href="/documentation/getting-started/installation/">Installation</a></li>
+  <li><a href="/documentation/getting-started/preparing-your-application/">Preparing Your Application</a></li>
+  <li><a href="/documentation/getting-started/authentication-and-authorisation/">Authentication & Authorisation</a></li>
+  <li><a href="/documentation/getting-started/cold-start/">Cold Start</a></li>
+  <li><a href="/documentation/getting-started/flow/">Flow</a></li>
+  <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
+  <li class="divider"></li>
+  <h5>Advanced Features</h5>
+  <li><a href="/documentation/advanced-features/remote-file/">Remote file task</a></li>
+  <li><a href="/documentation/advanced-features/role-filtering/">Role filtering</a></li>
+  <li><a href="/documentation/advanced-features/host-filtering/">Host filtering</a></li>
+  <li><a href="/documentation/advanced-features/capistrano-pure-ruby/">Using Capistrano from pure Ruby</a></li>
+  <li class="divider"></li>
+  <h5>Framework Extensions</h5>
+  <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
+  <li><a href="/documentation/frameworks/bundler/">Bundler</a></li>
+  <li><a href="/documentation/frameworks/rbenv-rvm-chruby/">Rbenv &amp; RVM &amp; chruby</a></li>
+  <!--<li class="divider"></li>                                                                     -->
+  <!--<h5>Troubleshooting</h5>                                                                      -->
+  <!--<li><a href="/documentation/troubleshooting/authentication/">SCM (Git) Authentication</a></li>-->
+  <!--<li><a href="/documentation/troubleshooting/connectivity/">Connectivity</a></li>              -->
+  <!--[><li><a href="/documentation/troubleshooting/gateway-servers/">Gateway Servers</a></li><]    -->
+  <!--<li><a href="/documentation/troubleshooting/agent-forwarding/">Agent Forwarding</a></li>      -->
+  <!--<li><a href="/documentation/troubleshooting/sudo-password/">`sudo` Password</a></li>          -->
+  <!--<li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/">RVM, `rbenv` And `nvm`</a></li>   -->
+  <li class="divider"></li>
+  <h5>FAQ</h5>
+  <li><a href="/documentation/faq/why-does-something-work-in-my-ssh-session-but-not-in-capistrano/">Why Does Something Work In An SSH Session, But Not In Capistrano?</a></li>
+  <!--<li><a href="/documentation/faq/should-i-use-capistrano-to-provision-my-servers/">Should I Use Capistrano To Provision My Servers?</a></li>-->
+  <li><a href="http://lee.hambley.name/2013/06/11/using-capistrano-v3-with-chef.html">Should I Use Capistrano To Provision My Servers?</a></li>
+  <!--<li class="divider"></li>                                                                                                      -->
+  <!--<h5>Power Use-Cases</h5>                                                                                                       -->
+  <!--<li><a href="/documentation/power-use-cases/integration-with-rake/">Integration With Rake</a></li>                             -->
+  <!--<li><a href="/documentation/power-use-cases/driving-tools-such-as-chef-solo/">Driving Tools Such As <em>Chef Solo</em></a></li>-->
+  <li class="divider"></li>
+  <h5>Legacy Documentation</h5>
+  <li><a href="https://github.com/capistrano/capistrano/wiki">Capistrano
+    v2</a></li>
+  <li class="divider"></li>
+  <h5>Recent Announcements</h5>
+  {% for post in site.posts %}
+    <li><a href="{{ post.url }}"><span class="post-date">{{ post.date | date_to_string }}</span> {{ post.title }}</a></li>
+  {% endfor %}
+</ul>
